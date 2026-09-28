@@ -1,0 +1,959 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة النظام | LUXEN TECH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="dashboard.css"> 
+</head>
+<body class="dashboard-body">
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="fullScreenLogin" class="login-overlay">
+        <div class="login-box">
+            <div class="logo-section">
+                <h1 class="logo-text" style="font-size: 2rem; background: linear-gradient(to right, #00f3ff, #ff00ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin-bottom: 0.5rem;">LUXEN TECH</h1>
+                <p class="admin-panel-text" style="margin-bottom: 2rem;">نظام الإدارة الآمن</p>
+            </div>
+            <form id="mainLoginForm">
+                <div class="login-input-group">
+                    <label>اسم المستخدم</label>
+                    <div class="admin-input-wrapper custom-password-input">
+                        <input type="text" id="mainUsername" required placeholder="أدخل اسم المستخدم" style="width: 100%; background: transparent; border: none; color: #fff; outline: none; font-family: inherit;">
+                    </div>
+                </div>
+                <div class="login-input-group">
+                    <label>كلمة المرور</label>
+                    <div class="admin-input-wrapper custom-password-input">
+                        <input type="password" id="mainPassword" required placeholder="••••••••••••" style="width: 100%; background: transparent; border: none; color: #fff; outline: none; font-family: inherit;">
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">تسجيل الدخول للنظام</button>
+                <p id="mainLoginError" class="error-msg" style="color: #f87171; margin-top: 1rem;"></p>
+            </form>
+        </div>
+    </div>
+    
+    <canvas id="premiumUniverseCanvas"></canvas>
+
+    <!-- نافذة قفل الصفحة -->
+    <div id="pageLockModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);">إعدادات حماية الصفحة</h3>
+            </div>
+            <div class="modal-body">
+                <p style="color: #94a3b8; font-size: 0.9rem;">يمكنك تعيين كلمة مرور لهذه الصفحة لمنع الوصول إليها إلا بكلمة المرور. للإلغاء، اترك الحقل فارغاً واضغط حفظ.</p>
+                <div class="modal-input-group">
+                    <label>كلمة مرور الصفحة <span id="currentLockStatus" style="font-size: 0.8rem; color: #10b981;">(غير محمية حالياً)</span></label>
+                    <div class="modal-input-wrapper">
+                        <input type="text" id="pagePasswordInput" placeholder="أدخل كلمة المرور أو اتركها فارغة للإلغاء...">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #ef4444; border-color: #ef4444; background: rgba(239, 68, 68, 0.1);" onclick="savePageLock()">حفظ الإعدادات</button>
+                <button class="btn-cancel" onclick="closeModal('pageLockModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إدارة اشتراكات المستخدمين -->
+    <div id="userSubscriptionModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);">إدارة اشتراك المستخدم</h3>
+            </div>
+            <div class="modal-body">
+                <p id="subModalUserName" style="color: #cbd5e1; font-weight: 700; margin-bottom: 0.5rem; background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);"></p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="modal-input-group">
+                        <label>اختيار الباقة <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper">
+                            <select id="userSubPlanSelect" onchange="handleSubPlanChange()" style="background: transparent; color: #fff; border: none; outline: none; width: 100%;">
+                                <option value="" style="color: #000;">بدون باقة (حساب مجاني)</option>
+                                <option value="Basic Plan" style="color: #000;">Basic Plan</option>
+                                <option value="Standard Plan" style="color: #000;">Standard Plan</option>
+                                <option value="Pro Plan" style="color: #000;">Pro Plan</option>
+                                <option value="Go Plan" style="color: #000;">Go Plan</option>
+                                <option value="Enterprise Plan" style="color: #000;">Enterprise Plan (حسب الطلب)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-input-group">
+                        <label>تاريخ انتهاء الصلاحية <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper">
+                            <input type="date" id="userSubExpiryInput">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glowing-divider" style="margin: 1.5rem 0;"></div>
+
+                <div class="modal-input-group">
+                    <label>إضافة مميزات مخصصة للمستخدم</label>
+                    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem;">اكتب الميزة واضغط إضافة لتفعيلها في حساب هذا المستخدم فقط.</p>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <div class="modal-input-wrapper" style="flex: 1;">
+                            <input type="text" id="customFeatureInput" placeholder="اكتب الميزة هنا... (مثال: إنشاء 50 صورة يومياً)">
+                        </div>
+                        <button type="button" class="btn-submit" style="color: #00f3ff; border-color: #00f3ff; background: rgba(0, 243, 255, 0.1); padding: 0 1.5rem; flex: none; width: auto;" onclick="addCustomFeature()">إضافة ميزة</button>
+                    </div>
+                    
+                    <div class="permissions-grid" id="userSubFeaturesGrid" style="grid-template-columns: 1fr; max-height: 150px; overflow-y: auto;">
+                        <!-- Custom Features will be appended here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #00f3ff; border-color: #00f3ff; background: rgba(0, 243, 255, 0.1);" onclick="saveUserSubscription()">حفظ اشتراك المستخدم</button>
+                <button class="btn-cancel" onclick="closeModal('userSubscriptionModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة سؤال شائع -->
+    <div id="addFaqModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header"><h3 class="modal-title">معلومات السؤال</h3></div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>السؤال <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="faqQuestionInput" maxlength="500" placeholder="اكتب السؤال هنا..."></div>
+                </div>
+                <div class="modal-input-group">
+                    <label>الإجابة <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><textarea id="faqAnswerInput" maxlength="2000" placeholder="اكتب الإجابة هنا..."></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" onclick="submitFaq()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    حفظ السؤال
+                </button>
+                <button class="btn-cancel" onclick="closeModal('addFaqModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة شريك -->
+    <div id="addPartnerModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header"><h3 class="modal-title" id="partnerModalTitle" style="color: #a855f7; text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);">إضافة شريك جديد</h3></div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>اسم الشريك أو المنظمة <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="partnerNameInput" placeholder="أدخل اسم الشريك..."></div>
+                </div>
+                <div class="modal-input-group">
+                    <label>نوع الشريك / التصنيف <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper">
+                        <select id="partnerTypeInput" style="background: transparent; color: #fff; border: none; outline: none; width: 100%;">
+                            <option value="community" style="color: #000;">مجتمع طلابي</option>
+                            <option value="initiative" style="color: #000;">مبادرة</option>
+                            <option value="competition" style="color: #000;">مسابقة</option>
+                            <option value="event" style="color: #000;">نادي علمي / فعالية</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-input-group">
+                    <label>رابط لوجو الشريك (صورة) <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="url" id="partnerLogoInput" placeholder="https://example.com/logo.png" dir="ltr" style="text-align: left;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #a855f7; border-color: #a855f7; background: rgba(168, 85, 247, 0.1);" onclick="submitPartner()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                    <span id="submitPartnerBtnText">إضافة الشريك</span>
+                </button>
+                <button class="btn-cancel" onclick="closeModal('addPartnerModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة كوبون -->
+    <div id="addPromoModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header"><h3 class="modal-title" style="color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);">إنشاء كوبون خصم جديد</h3></div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>كود الخصم (Promo Code) <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="promoCodeInput" placeholder="مثال: LUXEN20" style="text-transform: uppercase;"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="modal-input-group">
+                        <label>نوع الخصم <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper">
+                            <select id="promoTypeInput" style="background: transparent; color: #fff; border: none; outline: none; width: 100%;">
+                                <option value="percentage" style="color: #000;">نسبة مئوية (%)</option>
+                                <option value="fixed" style="color: #000;">مبلغ ثابت ($)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-input-group">
+                        <label>قيمة الخصم <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper"><input type="number" id="promoValueInput" placeholder="مثال: 20"></div>
+                    </div>
+                    <div class="modal-input-group">
+                        <label>تاريخ الانتهاء <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper"><input type="date" id="promoExpiryInput"></div>
+                    </div>
+                    <div class="modal-input-group">
+                        <label>الحد الأقصى للاستخدام <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper"><input type="number" id="promoLimitInput" placeholder="عدد المرات (مثال: 100)"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #10b981; border-color: #10b981; background: rgba(16, 185, 129, 0.1);" onclick="submitPromoCode()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+                    إصدار الكوبون
+                </button>
+                <button class="btn-cancel" onclick="closeModal('addPromoModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة باقة عامة -->
+    <div id="addPlanModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header"><h3 class="modal-title" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);" id="planModalTitle">إضافة باقة جديدة</h3></div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>اسم الباقة <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="planNameInput" placeholder="مثال: الباقة الذهبية"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="modal-input-group">
+                        <label>السعر <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper"><input type="number" id="planPriceInput" placeholder="مثال: 50"></div>
+                    </div>
+                    <div class="modal-input-group">
+                        <label>المدة <span class="required-asterisk">*</span></label>
+                        <div class="modal-input-wrapper">
+                            <select id="planDurationInput" style="background: transparent; color: #fff; border: none; outline: none; width: 100%;">
+                                <option value="شهري" style="color: #000;">شهري</option>
+                                <option value="سنوي" style="color: #000;">سنوي</option>
+                                <option value="مدى الحياة" style="color: #000;">مدى الحياة</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-input-group">
+                    <label>مميزات الباقة (كل ميزة في سطر جديد) <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><textarea id="planFeaturesInput" placeholder="ميزة 1&#10;ميزة 2&#10;ميزة 3"></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #38bdf8; border-color: #38bdf8; background: rgba(56, 189, 248, 0.1);" onclick="submitPlan()" id="planSubmitBtn">حفظ الباقة</button>
+                <button class="btn-cancel" onclick="closeModal('addPlanModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة مشرف (أدمن) -->
+    <div id="addAdminModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header"><h3 class="modal-title" style="color: #a855f7; text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);" id="adminModalTitle">إنشاء حساب مشرف جديد</h3></div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>اسم المستخدم (للدخول) <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="adminUsernameInput" placeholder="مثال: mod_ahmed"></div>
+                </div>
+                <div class="modal-input-group">
+                    <label>كلمة المرور <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="adminPasswordInput" placeholder="كلمة المرور الخاصة بالمشرف"></div>
+                </div>
+                <div class="modal-input-group">
+                    <label>تحديد الصلاحيات: <span class="required-asterisk">*</span></label>
+                    <div class="permissions-grid">
+                        <label><input type="checkbox" value="mainWorkspace" class="admin-perm-cb"> جميع المستخدمين</label>
+                        <label><input type="checkbox" value="faqWorkspace" class="admin-perm-cb"> الأسئلة الشائعة</label>
+                        <label><input type="checkbox" value="collabWorkspace" class="admin-perm-cb"> طلبات التعاون</label>
+                        <label><input type="checkbox" value="partnersWorkspace" class="admin-perm-cb"> الشركاء والمتعاونين</label>
+                        <label><input type="checkbox" value="videoWorkspace" class="admin-perm-cb"> الفيديو التعريفي</label>
+                        <label><input type="checkbox" value="pricingWorkspace" class="admin-perm-cb"> الأسعار والكوبونات</label>
+                        <label><input type="checkbox" value="notificationsWorkspace" class="admin-perm-cb"> الإشعارات</label>
+                        <label><input type="checkbox" value="eventsWorkspace" class="admin-perm-cb"> الايفينتات</label>
+                        <label><input type="checkbox" value="permissionsWorkspace" class="admin-perm-cb"> الصلاحيات</label>
+                        <label><input type="checkbox" value="settingsWorkspace" class="admin-perm-cb"> إعدادات النظام</label>
+                        <label><input type="checkbox" value="fullControlWorkspace" class="admin-perm-cb"> التحكم الكامل</label>
+                        <label><input type="checkbox" value="devicesWorkspace" class="admin-perm-cb"> الأجهزة المتصلة</label>
+                        <label><input type="checkbox" value="notesWorkspace" class="admin-perm-cb"> الملاحظات</label>
+                        <label><input type="checkbox" value="backupWorkspace" class="admin-perm-cb"> النسخ الاحتياطي</label>
+                        <label><input type="checkbox" value="countriesWorkspace" class="admin-perm-cb"> مستخدمين الدول</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #a855f7; border-color: #a855f7; background: rgba(168, 85, 247, 0.1);" onclick="submitAdmin()" id="adminSubmitBtn">إنشاء الحساب</button>
+                <button class="btn-cancel" onclick="closeModal('addAdminModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة ملاحظة -->
+    <div id="addNoteModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="modal-header"><h3 class="modal-title" style="color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.3);" id="noteModalTitle">إضافة ملاحظة ذكية</h3></div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>عنوان الملاحظة <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><input type="text" id="noteTitleInput" placeholder="اكتب العنوان هنا..."></div>
+                </div>
+                <div class="modal-input-group">
+                    <label>مستوى الأهمية (اللون) <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper">
+                        <select id="notePriorityInput" style="background: transparent; color: #fff; border: none; outline: none; width: 100%;">
+                            <option value="medium" style="color: #000;">عادية (أصفر)</option>
+                            <option value="high" style="color: #000;">هامة جداً (أحمر)</option>
+                            <option value="low" style="color: #000;">منخفضة/منجزة (أخضر)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-input-group">
+                    <label>التفاصيل <span class="required-asterisk">*</span></label>
+                    <div class="modal-input-wrapper"><textarea id="noteContentInput" placeholder="اكتب تفاصيل الملاحظة هنا..." style="min-height: 120px;"></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" style="color: #facc15; border-color: #facc15; background: rgba(250, 204, 21, 0.1);" onclick="submitNote()" id="noteSubmitBtn">حفظ الملاحظة</button>
+                <button class="btn-cancel" onclick="closeModal('addNoteModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- القائمة الجانبية (SIDEBAR) -->
+    <div class="dashboard-container">
+        
+        <aside class="dash-sidebar">
+            <div class="sidebar-brand">
+                <a href="index.html" class="logo"><span class="logo-text">LUXEN TECH</span></a>
+                <span class="admin-panel-text" id="currentUserRoleText">ADMIN CONTROL PANEL</span>
+            </div>
+
+            <div class="glowing-divider sidebar-divider"></div>
+
+            <div class="admin-auth-section">
+                <label class="admin-auth-label">مفتاح المرور</label>
+                <div class="admin-input-wrapper custom-password-input">
+                    <span class="lock-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                    <input type="password" class="admin-pass-input" placeholder="••••••••••••" id="adminPassword">
+                    <button type="button" class="toggle-pass-btn" onclick="togglePassword()">
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-menu" id="sidebarMenuContainer" style="display: none;">
+                <button class="sidebar-action-btn menu-btn active" data-target="mainWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <span>جميع المستخدمين</span>
+                </button> <div class="menu-item-glow-line" data-linked="mainWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn countries-btn" data-target="countriesWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span>مستخدمين الدول</span>
+                </button> <div class="menu-item-glow-line" data-linked="countriesWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn" data-target="faqWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> <span>الأسئلة الشائعة</span>
+                </button> <div class="menu-item-glow-line" data-linked="faqWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn" data-target="collabWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> <span>طلبات التعاونات</span>
+                </button> <div class="menu-item-glow-line" data-linked="collabWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn" data-target="partnersWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <span>الشركاء وبطاقات النجاح</span>
+                </button> <div class="menu-item-glow-line" data-linked="partnersWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn notifications-btn" data-target="notificationsWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> <span>الإشعارات</span>
+                </button> <div class="menu-item-glow-line" data-linked="notificationsWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn events-btn" data-target="eventsWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <span>الايفينتات</span>
+                </button> <div class="menu-item-glow-line" data-linked="eventsWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn permissions-btn" data-target="permissionsWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M8 11h8"></path><path d="M8 15h6"></path></svg> <span>إدارة المشرفين</span>
+                </button> <div class="menu-item-glow-line" data-linked="permissionsWorkspace"></div>
+                
+                <button class="sidebar-action-btn menu-btn video-btn" data-target="videoWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg> <span>الفيديو التعريفي</span>
+                </button> <div class="menu-item-glow-line" data-linked="videoWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn pricing-btn" data-target="pricingWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> <span>الأسعار والكوبونات</span>
+                </button> <div class="menu-item-glow-line" data-linked="pricingWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn backup-btn-nav" data-target="backupWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> <span>النسخ الاحتياطي</span>
+                </button> <div class="menu-item-glow-line" data-linked="backupWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn settings-btn" data-target="settingsWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83 2.83l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> <span>إعدادات النظام</span>
+                </button> <div class="menu-item-glow-line" data-linked="settingsWorkspace"></div>
+                
+                <button class="sidebar-action-btn menu-btn devices-btn" data-target="devicesWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> <span>الأجهزة المتصلة</span>
+                </button> <div class="menu-item-glow-line" data-linked="devicesWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn notes-btn" data-target="notesWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <span>ملاحظاتي</span>
+                </button> <div class="menu-item-glow-line" data-linked="notesWorkspace"></div>
+
+                <button class="sidebar-action-btn menu-btn full-control-btn" data-target="fullControlWorkspace">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> <span>التحكم الكامل</span>
+                </button>
+            </div>
+
+            <div class="sidebar-bottom">
+                <button class="sidebar-action-btn theme-btn" id="themeToggleBtn" title="تبديل المظهر">
+                    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> <span id="theme-text">الوضع الفاتح</span>
+                </button>
+                <button class="sidebar-action-btn logout-btn" onclick="adminLogout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="dash-main-content" id="mainContentArea" style="opacity: 0; pointer-events: none; transition: opacity 0.5s ease;">
+            
+            <header class="page-header">
+                <div class="header-title-group">
+                    <h1 id="pageMainTitle">جميع المستخدمين</h1>
+                    <p id="pageMainDesc">قائمة المستخدمين المسجلين في النظام وإدارة الصلاحيات</p>
+                </div>
+                <div class="header-actions">
+                    <button id="lockSettingsBtn" class="page-lock-settings-btn" onclick="openLockModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span id="lockSettingsBtnText">حماية الصفحة</span>
+                    </button>
+                    <span class="status-badge connected">متصل بنجاح</span>
+                </div>
+            </header>
+
+            <div class="glowing-divider main-header-divider"></div>
+
+            <!-- مساحة قفل الصفحة -->
+            <div id="pageUnlockWorkspace" class="dash-workspace" style="display: none; align-items: center; justify-content: center; flex-direction: column;">
+                <div class="page-password-overlay">
+                    <div class="page-lock-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 0.5rem;">الصفحة محمية بكلمة مرور</h3>
+                    <p style="color: #94a3b8; margin-bottom: 2rem;">يرجى إدخال كلمة المرور المخصصة لهذه الصفحة للوصول إلى محتواها.</p>
+                    <form id="pageUnlockForm" class="page-unlock-form" onsubmit="submitUnlockPage(event)">
+                        <div class="admin-input-wrapper custom-password-input" style="width: 100%;">
+                            <input type="password" id="unlockPageInput" required placeholder="••••••••" style="width: 100%; background: transparent; border: none; color: #fff; outline: none; font-family: inherit; text-align: center; font-size: 1.2rem; letter-spacing: 3px;">
+                        </div>
+                        <button type="submit" class="btn-submit" style="width: 100%; justify-content: center; padding: 0.8rem; margin-top: 1rem;">فتح الصفحة</button>
+                        <p id="unlockPageError" style="color: #ef4444; margin-top: 0.5rem; display: none;"></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- مساحة جميع المستخدمين الرئيسية -->
+            <div class="dash-workspace" id="mainWorkspace" style="display: none;">
+                <div class="cards-carousel-wrapper">
+                    <button class="carousel-nav-btn right-btn" id="scrollRightBtn" title="السابق">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+
+                    <div class="stats-cards-grid" id="cardsContainer">
+                        <div class="stat-card total-users">
+                            <div class="stat-card-icon" style="background: rgba(255, 0, 234, 0.1); color: #ff00ea; box-shadow: inset 0 0 10px rgba(255, 0, 234, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div class="stat-card-info">
+                                <span class="stat-card-title">إجمالي المستخدمين</span>
+                                <h2 class="stat-card-value">0</h2>
+                                <span class="stat-card-trend">نشط في النظام</span>
+                            </div>
+                        </div>
+                        <div class="stat-card active-users">
+                            <div class="stat-card-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981; box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            </div>
+                            <div class="stat-card-info">
+                                <span class="stat-card-title">المستخدمين النشطين</span>
+                                <h2 class="stat-card-value">0</h2>
+                                <span class="stat-card-trend">الحالة الاحترافية</span>
+                            </div>
+                        </div>
+                        <div class="stat-card totally-inactive-users">
+                            <div class="stat-card-icon" style="background: rgba(155, 114, 255, 0.1); color: #9b72ff; box-shadow: inset 0 0 10px rgba(155, 114, 255, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div class="stat-card-info">
+                                <span class="stat-card-title">غير نشط</span>
+                                <h2 class="stat-card-value">0</h2>
+                                <span class="stat-card-trend">بدون نشاط مؤخراً</span>
+                            </div>
+                        </div>
+                        <div class="stat-card inactive-users">
+                            <div class="stat-card-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            </div>
+                            <div class="stat-card-info">
+                                <span class="stat-card-title">محظور / مقيد</span>
+                                <h2 class="stat-card-value">0</h2>
+                                <span class="stat-card-trend">تقييد الصلاحيات</span>
+                            </div>
+                        </div>
+                        <div class="stat-card online-users">
+                            <div class="stat-card-icon" style="background: rgba(0, 243, 255, 0.1); color: #00f3ff; box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                            </div>
+                            <div class="stat-card-info">
+                                <span class="stat-card-title">أونلاين الآن</span>
+                                <h2 class="stat-card-value">1</h2>
+                                <span class="stat-card-trend">نشاط اللحظة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="carousel-nav-btn left-btn" id="scrollLeftBtn" title="التالي">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                </div>
+
+                <div class="glowing-divider"></div>
+
+                <div class="table-section-container">
+                    <div class="table-header">
+                        <div class="table-title"><h3>سجل المستخدمين</h3></div>
+                        <div class="table-controls">
+                            <div class="search-box-glass">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                                <!-- تفعيل البحث بالاسم أو المعرف أو الإيميل -->
+                                <input type="text" id="userSearchInput" onkeyup="filterUsers()" placeholder="ابحث بالاسم، الإيميل، أو كود المستخدم...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>كود المستخدم</th>
+                                    <th>المستخدم</th>
+                                    <th>اسم المستخدم / الإيميل</th>
+                                    <th>الاشتراك والصلاحية</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة مستخدمين الدول -->
+            <div class="dash-workspace" id="countriesWorkspace" style="display: none;">
+                <div class="table-section-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);">إحصائيات المستخدمين حسب الدولة</h3>
+                        </div>
+                    </div>
+                    <div class="countries-grid" id="countriesGridContainer">
+                        <!-- سيتم توليد البطاقات عبر الجافاسكريبت هنا -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة الأسئلة الشائعة -->
+            <div class="dash-workspace" id="faqWorkspace" style="display: none;">
+                <div class="table-section-container" style="flex: 1;">
+                    <div class="table-header">
+                        <div class="table-title"><h3>الأسئلة الشائعة المسجلة</h3></div>
+                        <div class="table-controls" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="action-btn" style="color: #94a3b8; background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.2);" onclick="setGlobalFaqStatus('مخفي')">إخفاء الكل</button>
+                                <button class="action-btn" style="color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);" onclick="setGlobalFaqStatus('نشط')">إظهار الكل</button>
+                                <button class="action-btn" style="color: #facc15; background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.2);" onclick="setGlobalFaqStatus('قريباً')">قريباً للكل</button>
+                            </div>
+                            <button class="add-new-btn" onclick="openModal('addFaqModal')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                إضافة سؤال جديد
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%">عنوان السؤال</th>
+                                    <th>تاريخ الإضافة</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faqTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة طلبات التعاون -->
+            <div class="dash-workspace" id="collabWorkspace" style="display: none;">
+                <div class="table-section-container">
+                    <div class="table-header"><div class="table-title"><h3>طلبات التعاون</h3></div></div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>المنظمة / المجتمع</th>
+                                    <th>نوع التعاون</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="collabTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-section-container">
+                    <div class="table-header"><div class="table-title"><h3>طلبات الاستشارات</h3></div></div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>مجال الاستشارة</th>
+                                    <th>الميزانية التقديرية</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consultTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة المتعاونين والشركاء المحدثة لتعمل بنظام الـ Cards Grid -->
+            <div class="dash-workspace" id="partnersWorkspace" style="display: none;">
+                <div class="table-section-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #a855f7; text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);">قائمة شركاء النجاح</h3>
+                        </div>
+                        <div class="table-controls">
+                            <button class="add-new-btn" style="background: linear-gradient(to right, #a855f7, #7e22ce);" onclick="openAddPartnerModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                                إضافة شريك جديد
+                            </button>
+                        </div>
+                    </div>
+                    <!-- الشبكة الخاصة بكروت الشركاء -->
+                    <div class="partners-admin-grid" id="partnersGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                        <!-- سيتم إضافة الشركاء هنا عن طريق الجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحات (الإشعارات والايفينتات) -->
+            <div class="dash-workspace" id="notificationsWorkspace" style="display: none;">
+                <div class="table-section-container" style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
+                    <p style="color: #64748b; font-size: 1.3rem; font-weight: 600;">مساحة الإشعارات (مجهزة للبرمجة)</p>
+                </div>
+            </div>
+            <div class="dash-workspace" id="eventsWorkspace" style="display: none;">
+                <div class="table-section-container" style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
+                    <p style="color: #64748b; font-size: 1.3rem; font-weight: 600;">مساحة الايفينتات (مجهزة للبرمجة)</p>
+                </div>
+            </div>
+
+            <!-- مساحة الصلاحيات للمشرفين -->
+            <div class="dash-workspace" id="permissionsWorkspace" style="display: none;">
+                <div class="table-section-container" style="flex: 1;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #a855f7; text-shadow: 0 0 10px rgba(168, 85, 247, 0.2);">إدارة حسابات المشرفين (الأدمنز) والصلاحيات</h3>
+                        </div>
+                        <div class="table-controls">
+                            <button class="add-new-btn" style="background: linear-gradient(to right, #a855f7, #7e22ce);" onclick="openAddAdminModal()">إضافة مشرف جديد</button>
+                        </div>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem;">يمكنك هنا إنشاء حسابات فرعية لمديري النظام، وإعطاء كل مشرف صلاحيات محددة فقط.</p>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم المشرف (للدخول)</th>
+                                    <th>كلمة المرور</th>
+                                    <th>عدد الصلاحيات الممنوحة</th>
+                                    <th>تاريخ الإضافة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة الفيديو التعريفي -->
+            <div class="dash-workspace" id="videoWorkspace" style="display: none;">
+                <div class="table-section-container" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2rem;">
+                    <div class="table-header" style="width: 100%; justify-content: center; margin-bottom: 0;">
+                        <div class="table-title">
+                            <h3 style="color: #ff00ea; text-shadow: 0 0 10px rgba(255, 0, 234, 0.2); font-size: 1.5rem;">إدارة الفيديو التعريفي للمنصة</h3>
+                        </div>
+                    </div>
+                    <p style="color: #94a3b8; max-width: 600px; line-height: 1.6;">قم برفع الفيديو التعريفي الخاص بالمنصة ليعرض للمستخدمين في الواجهة الرئيسية للموقع.</p>
+
+                    <input type="file" id="introVideoInput" accept="video/*" style="display: none;">
+                    <button class="add-new-btn" onclick="document.getElementById('introVideoInput').click()" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 12px; background: linear-gradient(to right, #7c58dc, #ff00ea);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        اختر وارفع فيديو المنصة
+                    </button>
+
+                    <div class="video-preview-box" style="width: 100%; max-width: 700px; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); padding: 1.5rem; margin-top: 1rem;">
+                        <span id="noVideoText" style="color: #64748b; font-size: 1.1rem; font-weight: 600;">لم يتم رفع فيديو حتى الآن</span>
+                        <video id="videoPlayer" controls style="display: none; width: 100%; max-height: 450px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #000;"></video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة الباقات والكوبونات -->
+            <div class="dash-workspace" id="pricingWorkspace" style="display: none;">
+                <div class="table-section-container" style="flex: 1; margin-bottom: 2rem;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.2);">إدارة باقات الاشتراكات العامة</h3>
+                        </div>
+                        <div class="table-controls">
+                            <button class="add-new-btn" style="background: linear-gradient(to right, #38bdf8, #0ea5e9);" onclick="openAddPlanModal()">إضافة باقة جديدة</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الباقة</th>
+                                    <th>السعر</th>
+                                    <th>المدة</th>
+                                    <th>المميزات</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="plansTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="glowing-divider" style="margin-bottom: 2rem;"></div>
+
+                <div class="table-section-container" style="flex: 1;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);">إدارة كوبونات الخصم والعروض</h3>
+                        </div>
+                        <div class="table-controls">
+                            <button class="add-new-btn" style="background: linear-gradient(to right, #10b981, #059669);" onclick="openModal('addPromoModal')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                إنشاء كوبون جديد
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>كود الخصم</th>
+                                    <th>القيمة والنوع</th>
+                                    <th>الاستخدام (مُستخدم / متاح)</th>
+                                    <th>تاريخ الانتهاء</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="promoTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة إعدادات النظام -->
+            <div class="dash-workspace" id="settingsWorkspace" style="display: none;">
+                <div class="table-section-container" style="width: 100%;">
+                    <div class="table-header">
+                        <div class="table-title"><h3 style="color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.2);">أولاً: إدارة الحسابات وكلمات المرور</h3></div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="modal-input-group">
+                            <label>اسم المستخدم (المدير العام)</label>
+                            <div class="modal-input-wrapper"><input type="text" id="settingExtUser" placeholder="اسم مستخدم الشاشة الخارجية..."></div>
+                        </div>
+                        <div class="modal-input-group">
+                            <label>كلمة المرور (المدير العام)</label>
+                            <div class="modal-input-wrapper"><input type="text" id="settingExtPass" placeholder="كلمة مرور الشاشة الخارجية..."></div>
+                        </div>
+                        <div class="modal-input-group">
+                            <label>مفتاح المرور (الكود الداخلي الجانبي)</label>
+                            <div class="modal-input-wrapper"><input type="text" id="settingIntPass" placeholder="الكود الذي يفتح القائمة المنسدلة..."></div>
+                        </div>
+                    </div>
+
+                    <div class="table-header" style="margin-top: 1rem;">
+                        <div class="table-title"><h3 style="color: #ff00ea; text-shadow: 0 0 10px rgba(255, 0, 234, 0.2);">ثانياً: خيارات المنصة والمظهر العامة</h3></div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="modal-input-group">
+                            <label>اسم الشركة أو المنصة الرئيسي</label>
+                            <div class="modal-input-wrapper"><input type="text" id="settingSiteName" placeholder="مثال: LUXEN TECH"></div>
+                        </div>
+                        <div class="modal-input-group">
+                            <label>نص شارة الحالة (Status Badge)</label>
+                            <div class="modal-input-wrapper"><input type="text" id="settingStatusText" placeholder="مثال: متصل بنجاح، صيانة..."></div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-start; gap: 1rem; margin-top: 2rem;">
+                        <button class="add-new-btn" onclick="saveSystemSettings()" style="padding: 0.8rem 2rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            حفظ كافة التغييرات الفورية
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة التحكم الكامل وسجل النظام -->
+            <div class="dash-workspace" id="fullControlWorkspace" style="display: none;">
+                <div class="table-section-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 2rem; margin-bottom: 2rem;">
+                    <div class="table-header" style="width: 100%; justify-content: center; margin-bottom: 0;">
+                        <div class="table-title">
+                            <h3 style="color: #f59e0b; text-shadow: 0 0 10px rgba(245, 158, 11, 0.3); font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                مركز التحكم الكامل
+                            </h3>
+                        </div>
+                    </div>
+                    <p style="color: #94a3b8; max-width: 600px; line-height: 1.6; font-size: 1.1rem;">هذه المساحة تتيح لك الوصول المباشر لجذور النظام والتحكم المطلق في المنصة.</p>
+                    <button class="add-new-btn" style="padding: 1.5rem 4rem; font-size: 1.3rem; border-radius: 16px; background: linear-gradient(to right, #f59e0b, #ef4444); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4); margin-top: 2rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 10px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        الدخول للمنصه والتحكم الكامله فيها
+                    </button>
+                </div>
+                
+                <div class="table-section-container" style="flex: 1;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #f59e0b; text-shadow: 0 0 10px rgba(245, 158, 11, 0.2); display: flex; align-items: center; gap: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                سجل نشاطات النظام (Audit Log)
+                            </h3>
+                        </div>
+                        <div class="table-controls">
+                            <button class="btn-cancel" onclick="clearAuditLogs()" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">مسح السجل بالكامل</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>وقت الحركة</th>
+                                    <th>المسؤول (الأدمن)</th>
+                                    <th>نوع الإجراء</th>
+                                    <th>التفاصيل</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditLogsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة الأجهزة المتصلة -->
+            <div class="dash-workspace" id="devicesWorkspace" style="display: none;">
+                <div class="table-section-container" style="flex: 1;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #818cf8; text-shadow: 0 0 10px rgba(129, 140, 248, 0.3);">الأجهزة والمتصفحات النشطة</h3>
+                            <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">الأجهزة التي تم فتح حساب الأدمن عليها حالياً.</p>
+                        </div>
+                        <div class="table-controls">
+                            <button class="add-new-btn" style="background: linear-gradient(to right, #ef4444, #dc2626);" onclick="logoutAllDevices()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                تسجيل الخروج من جميع الأجهزة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>الجهاز / المتصفح</th>
+                                    <th>عنوان الـ IP</th>
+                                    <th>آخر ظهور</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="devicesTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مساحة ملاحظاتي -->
+            <div class="dash-workspace" id="notesWorkspace" style="display: none;">
+                <div class="table-section-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.3);">ملاحظاتي وأفكاري (Sticky Notes)</h3>
+                        </div>
+                        <div class="table-controls">
+                            <button class="add-new-btn" style="background: linear-gradient(to right, #facc15, #eab308); color: #000;" onclick="openAddNoteModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                إضافة ملاحظة جديدة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="notes-grid" id="notesGridContainer">
+                        </div>
+                </div>
+            </div>
+
+            <!-- مساحة النسخ الاحتياطي -->
+            <div class="dash-workspace" id="backupWorkspace" style="display: none;">
+                <div class="table-section-container" style="border: none; background: transparent; box-shadow: none; padding: 0;">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <h3 style="color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.3); font-size: 1.5rem;">النسخ الاحتياطي والأمان</h3>
+                        </div>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 2rem;">حافظ على أمان بيانات منصتك من الضياع عن طريق تحميل نسخة احتياطية دورية للاحتفاظ بها في مكان آمن.</p>
+
+                    <div class="backup-cards-container">
+                        <div class="backup-card">
+                            <div class="backup-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            </div>
+                            <h4 class="backup-title">تصدير قاعدة البيانات</h4>
+                            <p class="backup-desc">قم بتحميل نسخة احتياطية كاملة بصيغة JSON تحتوي على جميع المستخدمين والبيانات الحالية.</p>
+                            <button class="backup-btn" onclick="exportDatabase()">
+                                تحميل النسخة الاحتياطية (Export)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="script.js" defer></script>
+    <script src="dashboard.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LUXEN TECH | تسجيل الدخول</title>
+
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <div class="tech-grid"></div>
+    <div class="card-aura"></div>
+
+    <div class="container-wrapper">
+        <div class="container">
+            <button id="themeToggle" class="theme-toggle" aria-label="تبديل المظهر">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </button>
+
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="assets/logo.png" alt="LUXEN TECH Logo" onerror="this.style.display='none'">
+                </div>
+                <h1 id="mainTitle">إنشاء حساب جديد</h1>
+                <p class="subtitle" id="mainSubtitle">انضم إلى مجتمع LUXEN TECH</p>
+            </div>
+            
+            <div id="message"></div>
+            
+            <div id="registerWrapper" class="form-wrapper active">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="name">الاسم الكامل</label>
+                        <input type="text" id="name" required placeholder="أدخل اسمك بالكامل" autocomplete="name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">اسم المستخدم</label>
+                        <input type="text" id="username" required placeholder="مثال: ahmed_dev" pattern="[a-zA-Z0-9_]+" autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">رقم الهاتف</label>
+                        <div class="phone-input-container">
+                            <div class="phone-number-input">
+                                <input type="tel" id="phone" required placeholder="123 456 7890" autocomplete="tel-national">
+                            </div>
+                            <div class="country-selector" id="countrySelector">
+                                <button type="button" class="country-selector-btn" id="countrySelectorBtn"></button>
+                                <div class="country-dropdown">
+                                    <div class="country-search">
+                                        <input type="text" id="countrySearch" placeholder="ابحث عن الدولة...">
+                                    </div>
+                                    <div class="country-list" id="countryList"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">كلمة المرور</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" required placeholder="••••••••" minlength="8" autocomplete="new-password">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password', this)">
+                                <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm">تأكيد كلمة المرور</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirm" required placeholder="••••••••" minlength="8" autocomplete="new-password">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirm', this)">
+                                <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="registerBtn">
+                        <span>إنشاء الحساب الآن</span>
+                    </button>
+                </form>
+                
+                <div class="toggle-link">
+                    لديك حساب بالفعل؟ <a id="switchToLogin">تسجيل الدخول</a>
+                </div>
+            </div>
+
+            <div id="loginWrapper" class="form-wrapper">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">اسم المستخدم أو الهاتف</label>
+                        <input type="text" id="loginUsername" required placeholder="أدخل البيانات هنا" autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', this)">
+                                <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="loginBtn">
+                        <span>تسجيل الدخول</span>
+                    </button>
+                </form>
+                
+                <div class="toggle-link">
+                    مستخدم جديد؟ <a id="switchToRegister">أنشئ حسابك الآن</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="login.js" defer></script>
+</body>
+</html>

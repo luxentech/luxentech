@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXEN TECH</title>
+    
+    <link rel="preload" href="assets/logo.png" as="image">
+    
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="premiumUniverseCanvas"></canvas>
+
+    <div class="mobile-sidebar-overlay" id="mobileOverlay"></div>
+    
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-logo-area">
+                <a href="#" class="logo" style="font-size: 1.3rem;">
+                    <span class="logo-text">LUXEN TECH</span>
+                </a>
+            </div>
+            
+            <nav class="mobile-nav-links">
+                <a href="#" class="mobile-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    الرئيسية
+                </a>
+                <a href="https://coredx.vercel.app/" target="_blank" class="mobile-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    التوثيق الفني
+                </a>
+                <a href="#pricing" class="mobile-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    الخطط والأسعار
+                </a>
+            </nav>
+        </div>
+        
+        <div class="sidebar-bottom" id="mobileAuthContainer">
+            <div class="sidebar-theme-row">
+                <span class="sidebar-theme-label">مظهر الموقع</span>
+                <button class="theme-toggle mobile-theme-btn" aria-label="Toggle theme">
+                    <svg class="sunIcon" style="display:block;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    <svg class="moonIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+            <a href="login.html" id="authBtnMobile" class="btn btn-sm" style="width: 100%; padding: 0.85rem;">جرّب الآن مجانًا</a>
+        </div>
+    </div>
+
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-box">
+            <button id="executeSearchBtn" aria-label="تأكيد البحث">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+            <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن الموديلات، الأدوات، التوثيق..." style="z-index: 1;">
+            <button class="close-search" id="closeSearch" aria-label="إغلاق البحث" style="z-index: 1;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="developer-banner">
+        <div class="container">
+            <span class="dev-text">
+                Developed By: 
+                <a href="https://www.linkedin.com/in/abdalruhman-m-abdalnafea-610b5b231/" target="_blank" rel="noopener noreferrer" class="dev-link">
+                    OMAR AYMAN
+                </a>
+            </span>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <img src="assets/logo.png" alt="LUXEN TECH Logo" fetchpriority="high" onerror="this.style.display='none'">
+                    </div>
+                    <span class="logo-text">LUXEN TECH</span>
+                </a>
+
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <button class="search-toggle-btn" aria-label="بحث">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <span class="search-text">بحث</span>
+                    </button>
+                    
+                    <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="فتح القائمة">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+
+                <nav class="nav" id="desktopAuthContainer">
+                    <a href="#" class="nav-link">الرئيسية</a>
+                    <a href="https://coredx.vercel.app/" target="_blank" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        التوثيق
+                    </a>
+                    <a href="#pricing" class="nav-link">الخطط والأسعار</a>
+                    
+                    <button id="themeToggleDesktop" class="theme-toggle" aria-label="Toggle theme">
+                        <svg class="sunIcon" style="display:block;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                        <svg class="moonIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    </button>
+
+                    <a href="login.html" id="authBtnDesktop" class="btn btn-sm">جرّب الآن مجانًا</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="glow-animation"><path d="M12 3l-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                        <span>منصة متكاملة لتطوير حلول الذكاء الاصطناعي</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="luxen-glow-text" style="font-size: 1.1em; letter-spacing: 2px;">LUXEN TECH</span>
+                        <br>
+                        <span class="arabic-glow-text">ابنِ المستقبل بقوة الذكاء</span>
+                        <br>
+                        <span class="arabic-glow-text-2">الاصطناعي</span>
+                        <br>
+                        <span class="subtitle" style="margin-top: 1rem;">
+                            <span style="color: #94a3b8;">من</span> 
+                            <span style="color: #00f3ff;">الفكرة</span> 
+                            <span style="color: #94a3b8;">إلى</span> 
+                            <span style="color: #ff00ea;">التطبيق</span>
+                        </span>
+                    </h1>
+
+                    <p class="hero-description">
+                        منصة <span class="highlight-purple">LUXEN TECH</span> تمنح المطورين وصولًا موحدًا إلى أحدث نماذج الذكاء الاصطناعي، مع <span class="highlight-purple">AI APIs</span> و<span class="highlight-purple">API Keys</span> وأدوات تطوير متقدمة تساعدك على بناء تطبيقاتك ودمج الذكاء الاصطناعي وإطلاق مشاريعك بشكل أسرع وأكثر احترافية.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="login.html" id="heroAuthBtn" class="btn btn-lg">
+                            جرّب الآن مجانًا
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                        <a href="#pricing" class="btn btn-lg">اطّلع على الخطط</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="glowing-bottom-line"></div>
+
+        <section class="stats-section container-wide">
+            <div class="stats-grid" id="statsGrid">
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" data-target="15000" style="direction: ltr; text-align: right;">+0</h3>
+                        <p class="stat-label">مستخدم نشط</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" data-target="25" style="direction: ltr; text-align: right;">+0</h3>
+                        <p class="stat-label">نموذج ذكي مدعوم</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" data-target="7" style="direction: ltr; text-align: right;">+0</h3>
+                        <p class="stat-label">منتج مؤسسي</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" data-target="10000" style="direction: ltr; text-align: right;">+0</h3>
+                        <p class="stat-label">مشروع منجز</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number" data-target="30" style="direction: ltr; text-align: right;">+0</h3>
+                        <p class="stat-label">شريك نجاح</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="products-section" id="products">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge-pill">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        منتجاتنا
+                    </div>
+                    <h2 class="section-title">Our Enterprise Products</h2>
+                    <p class="section-description">نقدم منظومة متكاملة من المنتجات البرمجية المدعومة بالذكاء الاصطناعي، والمصممة خصيصاً لتمكين المؤسسات، المطورين، والطلاب من تحقيق أقصى درجات التميز والإبداع التقني.</p>
+                </div>
+
+                <div class="featured-products-grid">
+                    
+                    <div class="pcard">
+                        <div class="pcard-thumb">
+                            <img src="assets/products/edvora.png" alt="ReKit Hardware Studio" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x200/101018/f97316?text=ReKit'" />
+                        </div>
+                        <div class="pcard-body">
+                            <div class="pcard-head">
+                                <span class="pcard-badge" style="--bc:#f97316">Embedded Systems</span>
+                                <span class="pcard-name">ReKit Hardware Studio</span>
+                            </div>
+                            <p class="pcard-desc">منصة هندسية مبتكرة تدمج عتاد إنترنت الأشياء مع أدوات برمجية ذكية تولّد أكواد تلقائياً، لتسريع دورة حياة الأنظمة المدمجة.</p>
+                            <div class="pcard-tags"><span>IoT Hardware</span><span>Embedded AI</span><span>C++ Generation</span></div>
+                            <a href="https://corex-xi.vercel.app/" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                        </div>
+                    </div>
+                    
+                    <div class="pcard">
+                        <div class="pcard-thumb">
+                            <img src="assets/products/Elevate.png" alt="Elevate" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://elevate-opportunities.vercel.app/'" />
+                        </div>
+                        <div class="pcard-body">
+                            <div class="pcard-head">
+                                <span class="pcard-badge" style="--bc:#8b5cf6">Career Growth</span>
+                                <span class="pcard-name">Elevate</span>
+                            </div>
+                            <p class="pcard-desc">صاروخ لتسريع مستقبلك المهني والأكاديمي! انطلق نحو العالمية واكتشف أقوى المنح الدراسية، الوظائف التقنية، وبرامج التدريب الحصرية في مكان واحد.</p>
+                            <div class="pcard-tags"><span>Scholarships</span><span>Tech Jobs</span><span>Training</span></div>
+                            <a href="https://elevate-opportunities.vercel.app/" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="text-align: center; margin-top: 3.5rem;">
+                    <button onclick="openProjectsModal()" class="btn btn-lg" style="background: linear-gradient(135deg, #00f3ff, #ff00ea) !important; color: white !important; font-size: 1.1rem; padding: 1rem 2.5rem; border: none !important;">
+                        اطلع علي باقي المشاريع
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="projects-modal" class="projects-modal">
+        <div class="projects-modal-content">
+            <span class="projects-close-btn" onclick="closeProjectsModal()">&times;</span>
+            <div class="section-header" style="margin-bottom: 2.5rem; text-align: center;">
+                <h2 class="section-title" style="font-size: 2rem;">باقي مشاريعنا التقنية</h2>
+                <p class="section-description">اكتشف منظومة متكاملة من الحلول المدعومة بالذكاء الاصطناعي</p>
+            </div>
+            
+            <div class="projects-modal-grid">
+                
+                <div class="pcard">
+                    <div class="pcard-thumb">
+                        <img src="assets/products/corexone.png" alt="CoreX One" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x200/101018/a855f7?text=CoreX+One'" />
+                    </div>
+                    <div class="pcard-body">
+                        <div class="pcard-head">
+                            <span class="pcard-badge" style="--bc:#a855f7">Advanced AI</span>
+                            <span class="pcard-name">CoreX One</span>
+                        </div>
+                        <p class="pcard-desc">مساعد ذكاء اصطناعي شامل ومتعدد الوظائف، يدعم الأبحاث العلمية، التصفح المتقدم للويب، وتوليد ومعالجة الصور.</p>
+                        <div class="pcard-tags"><span>Research AI</span><span>Advanced GenAI</span><span>Data Analysis</span></div>
+                        <a href="https://corex-xi.vercel.app/" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                    </div>
+                </div>
+                
+                <div class="pcard">
+                    <div class="pcard-thumb">
+                        <img src="assets/products/bemo.png" alt="BeMo" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x200/101018/00f3ff?text=BeMo'" />
+                    </div>
+                    <div class="pcard-body">
+                        <div class="pcard-head">
+                            <span class="pcard-badge" style="--bc:#3b82f6">Educational AI</span>
+                            <span class="pcard-name">BeMo STEM Assistant</span>
+                        </div>
+                        <p class="pcard-desc">مساعد تعليمي تفاعلي مصمم لدعم الطلاب في استيعاب المناهج العلمية المعقدة (STEM)، وتأهيلهم لاجتياز المنافسات.</p>
+                        <div class="pcard-tags"><span>Problem Solving</span><span>STEM Integration</span><span>Competitions</span></div>
+                        <a href="https://t.me/CoreXLabBot" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                    </div>
+                </div>
+                
+                <div class="pcard">
+                    <div class="pcard-thumb">
+                        <img src="assets/products/beco.png" alt="BeCo" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x200/101018/10b981?text=BeCo'" />
+                    </div>
+                    <div class="pcard-body">
+                        <div class="pcard-head">
+                            <span class="pcard-badge" style="--bc:#10b981">Interactive Learning</span>
+                            <span class="pcard-name">BeCo Education Platform</span>
+                        </div>
+                        <p class="pcard-desc">بيئة تعليمية ذكية تهدف إلى الارتقاء بمهارات البرمجة لدى الطلاب، وتوفر أدوات تقييم مستمرة وامتحانات تجريبية.</p>
+                        <div class="pcard-tags"><span>AI Tutor</span><span>Interactive Coding</span><span>Assessments</span></div>
+                        <a href="https://coredx.vercel.app/" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                    </div>
+                </div>
+                
+                <div class="pcard">
+                    <div class="pcard-thumb">
+                        <img src="assets/products/router.png" alt="CoreX Gateway" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x200/101018/f59e0b?text=CoreX+Gateway'" />
+                    </div>
+                    <div class="pcard-body">
+                        <div class="pcard-head">
+                            <span class="pcard-badge" style="--bc:#f59e0b">Enterprise Access</span>
+                            <span class="pcard-name">CoreX API Gateway</span>
+                        </div>
+                        <p class="pcard-desc">بوابة وصول موثوقة تتيح للمطورين والشركات دمج وتجربة نماذج الذكاء الاصطناعي الرائدة ضمن بيئة اختبار مقننة.</p>
+                        <div class="pcard-tags"><span>API Integration</span><span>Rate Limiting</span><span>Sandbox</span></div>
+                        <a href="https://coredx.vercel.app/" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                    </div>
+                </div>
+                
+                <div class="pcard">
+                    <div class="pcard-thumb">
+                        <img src="assets/products/intervo.png" alt="Intervo AI Simulator" class="pcard-img" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x200/101018/14b8a6?text=Intervo'" />
+                    </div>
+                    <div class="pcard-body">
+                        <div class="pcard-head">
+                            <span class="pcard-badge" style="--bc:#14b8a6">Interview Prep</span>
+                            <span class="pcard-name">Intervo AI Simulator</span>
+                        </div>
+                        <p class="pcard-desc">نظام محاكاة متقدم يعتمد على الذكاء الاصطناعي لإجراء المقابلات المهنية، يقدم تحليلاً دقيقاً للمهارات لتهيئة المرشحين.</p>
+                        <div class="pcard-tags"><span>AI Evaluation</span><span>Skill Assessment</span><span>Simulations</span></div>
+                        <a href="https://corex-xi.vercel.app/" target="_blank" class="btn btn-sm" style="width: 100%; margin-top: auto;">دخول</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="glowing-bottom-line"></div>
+
+    <section class="container" style="margin-top: 6rem; margin-bottom: 8rem; position: relative;">
+        <div class="video-demo-placeholder" onclick="openVideo()">
+            <div class="video-demo-border"></div>
+            
+            <div class="video-demo-badge" style="z-index: 2;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                </svg>
+                فيديو تعريفي
+            </div>
+            
+            <div class="video-play-icon" style="z-index: 2;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </div>
+            
+            <h2 class="video-demo-title" style="z-index: 2;">شاهد كيف يعمل LUXEN TECH في 60 ثانية</h2>
+            <p class="video-demo-sub" style="z-index: 2;">انقر هنا لتشغيل الفيديو التعريفي ✨</p>
+        </div>
+    </section>
+
+    <div id="video-modal" class="video-modal">
+        <div class="video-modal-content">
+            <span class="video-close-btn" onclick="closeVideo()">&times;</span>
+            <div class="video-responsive" style="padding-bottom: 0; height: auto;">
+                <video id="promo-video" src="assets/luxen_video.mp4" controls preload="none" style="width: 100%; border-radius: 12px; display: block; max-height: 80vh;"></video>
+            </div>
+        </div>
+    </div>
+
+    <div class="glowing-bottom-line" style="margin-top: 4rem;"></div>
+
+    <section id="pricing" class="pricing-section container-wide" style="margin-top: 6rem; margin-bottom: 6rem;">
+        <div class="section-header">
+            <div class="section-badge-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 4px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                الأسعار
+            </div>
+            <h2 class="section-title">اختر الخطة المناسبة لك</h2>
+            <p class="section-description">خطط مرنة تناسب جميع الاحتياجات من المبتدئين إلى المحترفين</p>
+            <div class="pricing-notice">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                <span>لما خطتك تخلص، تقدر تتواصل معانا وتزود طلبات أو أيام على حسب ما انت عايز!</span>
+            </div>
+        </div>
+
+        <div class="pricing-grid" id="pricingGrid"></div>
+
+        <div class="custom-plan">
+            <div class="custom-plan-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="custom-plan-content">
+                <h3 class="custom-plan-title">Custom Plan - API على مزاجك</h3>
+                <p class="custom-plan-description">صمم خطتك الخاصة بما يناسب احتياجاتك تماماً</p>
+                <p class="custom-plan-text">اختر عدد الطلبات، المفاتيح، الموديلات، والميزات الإضافية وتواصل معنا مباشرة</p>
+                <a href="https://wa.me/+201099273142?text=مرحبًا، أرغب في تصميم خطة مخصصة على منصة LUXEN TECH" target="_blank" class="btn btn-sm">صمّم خطتك الآن</a>
+            </div>
+        </div>
+
+        <div class="discount-section">
+            <div class="discount-box">
+                <div class="discount-info">
+                    <div class="discount-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                    </div>
+                    <div class="discount-text">
+                        <h4 class="discount-title">هل تمتلك كود خصم؟</h4>
+                        <p class="discount-desc">قم بإدخال الكود للحصول على تخفيض فوري على اشتراكك</p>
+                    </div>
+                </div>
+                <div class="discount-input-wrapper">
+                    <input type="text" id="promoCodeInput" class="discount-input" placeholder="أدخل كود الخصم هنا...">
+                    <button class="btn btn-sm apply-discount-btn" id="applyPromoBtn">
+                        تفعيل الكود
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="glowing-bottom-line"></div>
+
+    <section id="coming" class="coming-section container" style="margin-top: 6rem; margin-bottom: 6rem;">
+        <div class="section-header reveal">
+            <div class="section-badge-pill soon-section-tag" style="background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.25); color: #d97706;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 4px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                قريباً
+            </div>
+            <h2 class="section-title">ميزات قادمة قريباً</h2>
+            <p class="section-description">بنشتغل على حاجات كتير وهيكونوا معاكم قريباً جداً</p>
+        </div>
+        <div class="coming-grid">
+            <div class="coming-card reveal" data-delay="0">
+                <div class="coming-card-tag"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>قريباً</div>
+                <div class="coming-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></div>
+                <h3>GitHub Open Source</h3>
+                <p>قريباً هيكون فيه GitHub Repo عام يتيح للمطورين استخدام موديلات CoreX Ai.</p>
+            </div>
+            <div class="coming-card reveal" data-delay="80">
+                <div class="coming-card-tag coming-card-tag-wip"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>تحت التطوير</div>
+                <div class="coming-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                <h3>Affiliate Program</h3>
+                <p>شارك مع CoreX Ai واكسب شهر مجاني لكل شخص يشترك عن طريقك.</p>
+            </div>
+            <div class="coming-card reveal" data-delay="160">
+                <div class="coming-card-tag"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>قريباً</div>
+                <div class="coming-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+                <h3>Mobile App</h3>
+                <p>تطبيق CoreX AI على iOS و Android قريباً — كل ميزات المنصة في جيبك.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="glowing-bottom-line"></div>
+
+    <section id="faq" class="faq-section container" style="margin-top: 6rem; margin-bottom: 6rem;">
+        <div class="section-header">
+            <div class="section-badge-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 4px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                الأسئلة الشائعة
+            </div>
+            <h2 class="section-title">إجابات على أكثر الأسئلة شيوعاً</h2>
+            <p class="section-description">كل حاجة محتاج تعرفها عن LUXEN TECH في مكان واحد</p>
+        </div>
+        
+        <div class="faq-grid" id="faq-dynamic"></div>
+        
+        <div class="faq-submit-section">
+            <div class="faq-submit-text">
+                <h4>سؤالك مش موجود؟</h4>
+                <p>ابعتلنا سؤالك وهنضيف إجابته هنا</p>
+            </div>
+            <form class="faq-submit-form" id="faq-submit-form">
+                <input type="text" class="faq-submit-input" id="newQuestionInput" placeholder="اكتب سؤالك هنا..." required>
+                <button type="submit" class="faq-submit-btn">إرسال</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="glowing-bottom-line"></div>
+
+    <!-- ==============================================
+         NEW INDIVIDUAL PARTNERS CARDS SECTION 
+         ============================================== -->
+    <section id="partners" class="partners-section container" style="margin-top: 6rem; margin-bottom: 6rem;">
+        <div class="section-header reveal">
+            <div class="section-badge-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 4px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                شركاء النجاح
+            </div>
+            <h2 class="section-title">Collaborated With</h2>
+            <p class="section-description">نفخر بالتعاون مع نخبة من أبرز المجتمعات والمنظمات التقنية والتعليمية</p>
+        </div>
+
+        <div class="partners-cards-grid">
+            
+            <!-- 1. Single Partner (Main Page) -->
+            <div class="single-partner-card reveal" data-delay="0">
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/80/111111/a855f7?text=SF" alt="STEMfinity">
+                </div>
+                <div class="partner-info">
+                    <h3>STEMfinity</h3>
+                    <span class="partner-badge type-community">مجتمع طلابي</span>
+                </div>
+            </div>
+
+            <!-- Join Us CTA Card -->
+            <div class="single-partner-card cta-partner-card reveal" data-delay="100">
+                <div class="bento-cat-icon glow-icon" style="color: #fff; background: linear-gradient(135deg, #00f3ff, #ff00ea); border: none; margin-bottom: 0.5rem; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--color-foreground); margin: 0;">كن شريكاً للنجاح</h3>
+                <p style="font-size: 0.85rem; color: var(--color-muted-foreground); margin: 0; font-weight: 600;">نرحب بالتعاون مع المنظمات والمجتمعات الطموحة.</p>
+                <a href="#collab" class="btn btn-sm" style="margin-top: 1rem; width: 100%;">تواصل معنا للتعاون</a>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem; width: 100%;">
+            <button onclick="openPartnersModal()" class="btn btn-lg" style="background: linear-gradient(135deg, #00f3ff, #ff00ea) !important; color: white !important; font-size: 1.1rem; padding: 1rem 2.5rem; border: none !important;">
+                عرض باقي الشركاء
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- نافذة باقي الشركاء المنبثقة -->
+    <div id="partners-modal" class="projects-modal">
+        <div class="projects-modal-content">
+            <span class="projects-close-btn" onclick="closePartnersModal()">&times;</span>
+            <div class="section-header" style="margin-bottom: 2.5rem; text-align: center;">
+                <h2 class="section-title" style="font-size: 2rem;">باقي شركاء النجاح</h2>
+                <p class="section-description">نفخر بالتعاون مع نخبة من المبادرات والفعاليات التقنية</p>
+            </div>
+            
+            <div class="partners-cards-grid">
+                
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=BS" alt="بصمة شباب"></div>
+                    <div class="partner-info">
+                        <h3>بصمة شباب</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=PT" alt="Pulse Team"></div>
+                    <div class="partner-info">
+                        <h3>Pulse Team</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=ES" alt="EduSync"></div>
+                    <div class="partner-info">
+                        <h3>EduSync</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=GS" alt="Gateway Steps"></div>
+                    <div class="partner-info">
+                        <h3>Gateway Steps</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=EZ" alt="EduZone"></div>
+                    <div class="partner-info">
+                        <h3>EduZone</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=S27" alt="S'27"></div>
+                    <div class="partner-info">
+                        <h3>S'27</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=OP" alt="Opporta By Maddy"></div>
+                    <div class="partner-info">
+                        <h3>Opporta By Maddy</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=RE" alt="Resala Enti"></div>
+                    <div class="partner-info">
+                        <h3>Resala Enti</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/a855f7?text=SN" alt="سنا"></div>
+                    <div class="partner-info">
+                        <h3>سنا</h3>
+                        <span class="partner-badge type-community">مجتمع طلابي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/10b981?text=Ather" alt="Ather 11th District"></div>
+                    <div class="partner-info">
+                        <h3>Ather 11th District</h3>
+                        <span class="partner-badge type-initiative">مبادرة</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/10b981?text=WithMe" alt="With Me (Syria)"></div>
+                    <div class="partner-info">
+                        <h3>With Me (Syria)</h3>
+                        <span class="partner-badge type-initiative">مبادرة</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/10b981?text=Insp" alt="Inspire"></div>
+                    <div class="partner-info">
+                        <h3>Inspire</h3>
+                        <span class="partner-badge type-initiative">مبادرة</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/f59e0b?text=IEEE" alt="IEEE Nile University"></div>
+                    <div class="partner-info">
+                        <h3>IEEE Nile University</h3>
+                        <span class="partner-badge type-competition">مسابقة</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/3b82f6?text=STEM" alt="Oct. 11th District STEM"></div>
+                    <div class="partner-info">
+                        <h3>Oct. 11th District STEM</h3>
+                        <span class="partner-badge type-event">نادي علمي</span>
+                    </div>
+                </div>
+
+                <div class="single-partner-card">
+                    <div class="partner-logo"><img src="https://via.placeholder.com/80/111111/3b82f6?text=MakeX" alt="Make X"></div>
+                    <div class="partner-info">
+                        <h3>Make X</h3>
+                        <span class="partner-badge type-event">نادي علمي</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ============================================== -->
+
+    <div class="glowing-bottom-line"></div>
+    
+    <section id="support" class="container" style="margin-top: 6rem; margin-bottom: 6rem;">
+        <div class="section-header reveal">
+            <div class="section-badge-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 4px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                الدعم الفني
+            </div>
+            <h2 class="section-title">تواصل مع الدعم</h2>
+            <p class="section-description">نحن هنا لمساعدتك. اختر الطريقة الأنسب لك للتواصل مع فريق الدعم الفني لحل أي مشكلة تواجهك.</p>
+        </div>
+        
+        <div class="support-options">
+            <button id="openSupportModalBtn" class="support-card reveal">
+                <div class="support-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </div>
+                <h3>عن طريق المنصة</h3>
+                <p>أرسل تذكرتك مباشرة عبر الموقع وسنقوم بالرد عليك في أسرع وقت ممكن.</p>
+            </button>
+            
+            <a href="mailto:contact.luxentech@gmail.com" class="support-card reveal" data-delay="100">
+                <div class="support-icon" style="color: #00f3ff; background: rgba(0, 243, 255, 0.1); border-color: rgba(0, 243, 255, 0.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
+                <h3>عن طريق الإيميل</h3>
+                <p>contact.luxentech@gmail.com</p>
+            </a>
+        </div>
+    </section>
+
+    <div id="supportModal" class="support-modal">
+        <div class="support-modal-content">
+            <span class="support-close-btn" id="closeSupportModal">&times;</span>
+            <div class="section-header" style="margin-bottom: 1.5rem; text-align: center;">
+                <h2 class="section-title" style="font-size: 1.5rem;">تذكرة دعم فني</h2>
+                <p class="section-description">يرجى ملء البيانات وسنقوم بحل المشكلة في أقرب وقت.</p>
+            </div>
+            
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="support-email">البريد الإلكتروني <span class="req">*</span></label>
+                    <input type="email" id="support-email" class="form-control" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="support-phone">رقم الهاتف <span class="req">*</span></label>
+                    <input type="tel" id="support-phone" class="form-control" placeholder="رقم الهاتف للتواصل" required>
+                </div>
+                <div class="form-group">
+                    <label for="support-message">وصف المشكلة <span class="req">*</span></label>
+                    <textarea id="support-message" class="form-control" placeholder="اشرح المشكلة التي تواجهك بالتفصيل..." required style="min-height: 120px;"></textarea>
+                </div>
+                <button type="submit" class="collab-submit-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    <span class="btn-text">إرسال التذكرة</span>
+                </button>
+            </form>
+
+            <div class="form-success" id="supportSuccess" style="display: none; text-align: center; margin-top: 1rem; padding: 2rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <h4 style="margin-bottom: 0.5rem; color: #10b981; font-weight: 800; font-size: 1.5rem;">تم إرسال تذكرتك بنجاح!</h4>
+                <p style="color: var(--color-muted-foreground); font-size: 1.05rem;">فريق الدعم الفني سيقوم بمراجعة طلبك والتواصل معك في أقرب وقت.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="glowing-bottom-line"></div>
+
+    <section id="collab" class="container" style="margin-top: 6rem; margin-bottom: 6rem;">
+        
+        <div class="section-header reveal">
+            <div class="section-badge-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 4px;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11v6M19 14h6"/></svg>
+                تواصل معنا
+            </div>
+            <h2 class="section-title">ابدأ رحلتك مع LUXEN TECH</h2>
+            <p class="section-description">اختر نوع التواصل الأنسب لك، وسيقوم فريقنا بالرد عليك في أقرب وقت ممكن لبحث سبل التعاون أو تقديم الاستشارة.</p>
+        </div>
+
+        <div class="collab-card reveal">
+            <div class="collab-form-container">
+                
+                <div class="form-tabs">
+                    <button type="button" class="tab-btn active" data-target="collab-panel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        طلب تعاون
+                    </button>
+                    <button type="button" class="tab-btn" data-target="consult-panel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        طلب استشارة
+                    </button>
+                </div>
+
+                <div id="collab-panel" class="form-panel active">
+                    <form id="collab-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="collab-name">الاسم <span class="req">*</span></label>
+                                <input type="text" id="collab-name" name="name" class="form-control" placeholder="اسمك الكامل" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="collab-email">البريد الإلكتروني <span class="req">*</span></label>
+                                <input type="email" id="collab-email" name="email" class="form-control" placeholder="email@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="collab-org">اسم المنظمة / المجتمع <span class="req">*</span></label>
+                                <input type="text" id="collab-org" name="org" class="form-control" placeholder="اسم الجهة" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="collab-type">نوع التعاون</label>
+                                <select id="collab-type" name="type" class="form-control">
+                                    <option value="community">مجتمع تعليمي</option>
+                                    <option value="company">شركة / Startup</option>
+                                    <option value="school">مدرسة / معهد</option>
+                                    <option value="ngo">منظمة غير ربحية</option>
+                                    <option value="creator">محتوى كريتور / مطور</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="collab-website">الموقع الإلكتروني</label>
+                            <input type="url" id="collab-website" name="website" class="form-control" placeholder="https://example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="collab-social">رابط السوشيال ميديا</label>
+                            <input type="text" id="collab-social" name="social" class="form-control" placeholder="Facebook / LinkedIn / Twitter">
+                        </div>
+                        <div class="form-group">
+                            <label for="collab-message">رسالتك ونبذة عن التعاون <span class="req">*</span></label>
+                            <textarea id="collab-message" name="message" class="form-control" placeholder="اشرح فكرة التعاون، ماذا ستقدم وماذا تستفيد..." required></textarea>
+                        </div>
+                        <button type="submit" class="collab-submit-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+                            <span class="btn-text">إرسال طلب التعاون</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div id="consult-panel" class="form-panel">
+                    <form id="consult-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="consult-name">الاسم بالكامل <span class="req">*</span></label>
+                                <input type="text" id="consult-name" name="name" class="form-control" placeholder="اسمك الكامل" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="consult-email">البريد الإلكتروني <span class="req">*</span></label>
+                                <input type="email" id="consult-email" name="email" class="form-control" placeholder="company@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="consult-phone">رقم الهاتف (واتساب) <span class="req">*</span></label>
+                                <input type="tel" id="consult-phone" name="phone" class="form-control" placeholder="+20 1xxxxxxxxx" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="consult-field">مجال الاستشارة المطلوب <span class="req">*</span></label>
+                                <select id="consult-field" name="field" class="form-control" required>
+                                    <option value="ai-integration">بناء وتكامل أنظمة الذكاء الاصطناعي</option>
+                                    <option value="web-dev">تطوير البرمجيات والمواقع الذكية</option>
+                                    <option value="digital-transformation">التحول الرقمي للمؤسسات</option>
+                                    <option value="other">استشارة تقنية أخرى</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="consult-budget">الميزانية التقديرية للمشروع</label>
+                            <select id="consult-budget" name="budget" class="form-control">
+                                <option value="startup">شركة ناشئة / فكرة أولية</option>
+                                <option value="medium">شركة متوسطة النمو</option>
+                                <option value="enterprise">مؤسسة ضخمة / Enterprise</option>
+                                <option value="not-sure">غير محدد بعد</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="consult-message">تفاصيل المشروع أو المشكلة التقنية <span class="req">*</span></label>
+                            <textarea id="consult-message" name="message" class="form-control" placeholder="اشرح باختصار طبيعة مشروعك، والتحديات التقنية التي تواجهك..." required></textarea>
+                        </div>
+                        <button type="submit" class="collab-submit-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+                            <span class="btn-text">حجز جلسة الاستشارة</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="form-success" id="collab-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <h4>تم إرسال طلب التعاون بنجاح!</h4>
+                    <p>شكراً لاهتمامك ببناء شراكة معنا.<br>فريق تطوير الأعمال سيراجع المقترح ويتواصل معك قريباً.</p>
+                </div>
+
+                <div class="form-success" id="consult-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <h4>تم تسجيل طلب الاستشارة التقنية!</h4>
+                    <p>يسعدنا جداً مساعدتك في تطوير مشروعك.<br>المهندس المختص سيقوم بالتواصل معك لتحديد موعد الجلسة الاستشارية.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <div class="glowing-bottom-line"></div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">
+                        <div class="logo-icon">
+                            <img src="assets/logo.png" alt="LUXEN TECH Logo" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                        </div>
+                        <span class="logo-text">LUXEN TECH</span>
+                    </a>
+                    <p class="footer-description">
+                        منصة متكاملة للوصول لأقوى نماذج الذكاء الاصطناعي من مكان واحد. مصممة للمطورين، من قبل المطورين.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4 class="footer-heading">روابط سريعة</h4>
+                    <ul>
+                        <li><a href="https://coredx.vercel.app/" target="_blank">التوثيق</a></li>
+                        <li><a href="https://ccbuilder-psi.vercel.app/" target="_blank">Builder</a></li>
+                        <li><a href="https://t.me/CoreXLabBot" target="_blank">Telegram Bot</a></li>
+                        <li><a href="#faq">الأسئلة الشائعة</a></li>
+                        <li><a href="#collab">تعاون معنا</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-linktree">
+                    <h4 class="footer-heading">جميع حساباتنا</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div class="linktree-tooltip-wrapper" data-tooltip="اضغط هنا للوصول لجميع حساباتنا">
+                            <a href="https://linktr.ee/luxentech" target="_blank" rel="noopener noreferrer" class="linktree-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 1.343l-4.104 4.01h-3.41l5.513-5.353L12 0l1.99 1.99 5.513 5.353h-3.41L12 1.343zm0 5.431L6.757 11.9H0v3.237h6.818l-4.15 4.053 2.274 2.328L12 14.331l7.058 7.187 2.274-2.328-4.15-4.053H24V11.9h-6.757L12 6.774zm-1.85 9.063V24h3.7v-8.163h-3.7z"/>
+                                </svg>
+                                <span style="z-index: 1;">Linktree</span>
+                            </a>
+                        </div>
+                        
+                        <div class="linktree-tooltip-wrapper" data-tooltip="شارك الموقع مع أصدقائك">
+                            <button id="shareWebsiteBtn" class="linktree-btn" style="cursor: pointer;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="18" cy="5" r="3"></circle>
+                                    <circle cx="6" cy="12" r="3"></circle>
+                                    <circle cx="18" cy="19" r="3"></circle>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                </svg>
+                                <span style="z-index: 1;">مشاركة</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">© 2026 LUXEN TECH. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const shareBtn = document.getElementById('shareWebsiteBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: 'LUXEN TECH',
+                                text: 'اكتشف منصة LUXEN TECH المتكاملة للذكاء الاصطناعي!',
+                                url: window.location.href
+                            });
+                        } catch (err) {
+                            console.log('تم إلغاء المشاركة أو حدث خطأ:', err);
+                        }
+                    } else {
+                        navigator.clipboard.writeText(window.location.href).then(() => {
+                            alert('تم نسخ رابط الموقع بنجاح!');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

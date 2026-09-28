@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - LUXEN TECH</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-background: #05050a;
+            --color-foreground: #f8fafc;
+            --color-card: #090911;
+            --color-muted: #131322;
+            --color-muted-foreground: #94a3b8;
+            --color-primary: #00f3ff;
+            --color-accent: #ff00ea;
+            --color-border: #17172c;
+            --color-danger: #ef4444;
+            --radius-md: 0.75rem;
+            --radius-lg: 1.5rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; outline: none; }
+
+        body {
+            background-color: var(--color-background); color: var(--color-foreground);
+            display: flex; height: 100vh; overflow: hidden; position: relative; z-index: 0;
+        }
+
+        body::before, body::after {
+            content: ''; position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; pointer-events: none; opacity: 0.25;
+        }
+        body::before { top: 10%; left: -15vw; width: 50vw; height: 60vh; background: radial-gradient(circle, var(--color-primary), transparent 60%); }
+        body::after { bottom: 10%; right: -15vw; width: 50vw; height: 60vh; background: radial-gradient(circle, var(--color-accent), transparent 60%); }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+        /* Sidebar Styles */
+        .sidebar { width: 270px; background-color: var(--color-card); border-left: 1px solid var(--color-border); display: flex; flex-direction: column; flex-shrink: 0; height: 100%; z-index: 100; backdrop-filter: blur(10px); }
+        .brand { padding: 30px 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid var(--color-border); }
+        .brand h2 { background: linear-gradient(135deg, #00f3ff 0%, #ff00ea 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; font-weight: 900; letter-spacing: 1px; }
+        .brand-icon { font-size: 22px; background: linear-gradient(135deg, #00f3ff, #ff00ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .nav-menu { flex: 1; padding: 25px 15px; list-style: none; }
+        .nav-menu li { margin-bottom: 8px; }
+        .nav-menu a { display: flex; align-items: center; padding: 12px 18px; color: var(--color-muted-foreground); text-decoration: none; border-radius: var(--radius-md); font-size: 15px; font-weight: 700; position: relative; transition: all 0.3s ease; z-index: 1; overflow: hidden; }
+        .nav-menu a i { margin-left: 12px; font-size: 18px; width: 22px; text-align: center; }
+        .nav-menu a::after { content: ''; position: absolute; inset: 0; background: var(--color-muted); border-radius: var(--radius-md); z-index: -1; opacity: 0; transition: opacity 0.3s; }
+        .nav-menu a:hover::after { opacity: 1; }
+        .nav-menu a:hover { color: var(--color-foreground); transform: translateX(-4px); }
+        .nav-menu a.active { color: var(--color-foreground); }
+        .nav-menu a.active::after { opacity: 1; background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 234, 0.1)); border: 1px solid rgba(0, 243, 255, 0.2); }
+        .nav-menu a.active i { color: var(--color-primary); }
+
+        .sidebar-bottom { padding: 20px; border-top: 1px solid var(--color-border); }
+        .user-profile { display: flex; align-items: center; padding: 10px; border-radius: var(--radius-md); cursor: pointer; transition: background 0.3s; }
+        .user-profile:hover { background-color: var(--color-muted); }
+        .user-avatar { width: 42px; height: 42px; background: linear-gradient(135deg, #00f3ff, #ff00ea); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; margin-left: 12px; overflow: hidden; }
+        .user-info h4 { font-size: 14px; font-weight: 700; color: var(--color-foreground); }
+        .user-info p { font-size: 12px; color: var(--color-muted-foreground); margin-top: 2px; }
+
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .content-wrapper { flex: 1; padding: 30px 40px; overflow-y: auto; }
+
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: rgba(9, 9, 17, 0.6); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 90; }
+        .role-badge { background: rgba(0, 243, 255, 0.1); color: var(--color-primary); border: 1px solid rgba(0, 243, 255, 0.2); padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; }
+        .top-icons .avatar-btn { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #00f3ff, #ff00ea); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; }
+
+        .page-section { display: none; animation: fadeIn 0.4s ease-out; }
+        .page-section.active-section { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .page-header { margin-bottom: 30px; }
+        .page-title { font-size: 28px; font-weight: 900; color: var(--color-foreground); letter-spacing: -0.5px; }
+
+        /* Panels */
+        .panel { background: rgba(15, 15, 23, 0.6); border: 1px solid rgba(124, 88, 220, 0.2); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s; }
+        .panel:hover { box-shadow: 0 8px 25px rgba(0, 243, 255, 0.1), 0 8px 25px rgba(255, 0, 234, 0.1); border-color: rgba(255, 0, 234, 0.3); }
+        .panel-header { margin-bottom: 25px; border-bottom: 1px solid var(--color-border); padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .panel-title { font-size: 18px; font-weight: 800; color: var(--color-foreground); display: flex; align-items: center; gap: 10px; }
+        .panel-title-icon { width: 8px; height: 8px; border-radius: 50%; background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
+
+        /* Profile Editing Styles */
+        .profile-avatar-wrapper { text-align: center; margin-bottom: 30px; }
+        .avatar-preview { width: 110px; height: 110px; border-radius: 25px; background: linear-gradient(135deg, #00f3ff, #ff00ea); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 900; cursor: pointer; overflow: hidden; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .avatar-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .avatar-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; color: #fff; font-size: 24px; }
+        .avatar-preview:hover .avatar-overlay { opacity: 1; }
+
+        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .profile-item { background: var(--color-muted); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 15px 20px; transition: 0.3s; }
+        .profile-item:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0, 243, 255, 0.15); }
+        .profile-item label { color: var(--color-muted-foreground); font-size: 13px; display: block; margin-bottom: 8px; font-weight: 700; }
+        
+        .profile-input { width: 100%; background: transparent; border: none; color: var(--color-foreground); font-size: 16px; font-weight: 800; outline: none; font-family: inherit; }
+        .profile-input[readonly] { color: var(--color-primary); opacity: 0.8; }
+        
+        .password-container { display: flex; align-items: center; gap: 15px; background: var(--color-muted); border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 12px 18px; margin-top: 10px; transition: all 0.3s; }
+        .password-container:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0, 243, 255, 0.15); background: var(--color-card); }
+        .password-input { background: transparent; border: none; color: var(--color-foreground); font-size: 18px; font-weight: 700; flex: 1; outline: none; letter-spacing: 3px; font-family: monospace; }
+        .toggle-pwd-btn { background-color: var(--color-card); border: 1px solid var(--color-border); color: var(--color-foreground); padding: 8px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13px; transition: 0.3s; }
+        .toggle-pwd-btn:hover { background-color: var(--color-primary); color: #000; border-color: var(--color-primary); }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 24px; border-radius: 9999px; font-weight: 800; font-size: 14px; color: #fff; cursor: pointer; border: none; position: relative; overflow: hidden; z-index: 1; background: transparent; transition: transform 0.3s; text-decoration: none; }
+        .btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 300px; height: 300px; background: conic-gradient(from 0deg, transparent 0%, transparent 25%, #ff00ea 35%, #00f3ff 50%, transparent 50%, transparent 75%, #00f3ff 85%, #ff00ea 100%); transform-origin: center; animation: spinGlow 3.5s linear infinite; z-index: -2; }
+        .btn::after { content: ''; position: absolute; inset: 2px; background: #09090f; border-radius: 9999px; z-index: -1; transition: background 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2), 0 0 15px rgba(255, 0, 234, 0.2); }
+        .btn:hover::after { background: #12121e; }
+        .btn-save::after { background: linear-gradient(135deg, #00f3ff, #ff00ea); }
+        .btn-save:hover::after { background: linear-gradient(135deg, #05d6e0, #e000ce); }
+        
+        @keyframes spinGlow { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* API Layout */
+        .api-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px; align-items: stretch; }
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; min-height: 300px; }
+        .empty-state-icon { font-size: 45px; color: var(--color-muted-foreground); margin-bottom: 20px; opacity: 0.5; }
+        .empty-state h3 { color: var(--color-foreground); font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+        .empty-state p { color: var(--color-muted-foreground); font-size: 14px; font-weight: 600; }
+
+        @media (max-width: 992px) {
+            .api-layout { grid-template-columns: 1fr; }
+            .api-layout .panel:nth-child(1) { order: 2; }
+            .api-layout .panel:nth-child(2) { order: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-rocket brand-icon"></i>
+            <h2>LUXEN TECH</h2>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a href="#" class="active" id="menu-home"><i class="fa-solid fa-user"></i> ملفي الشخصي</a></li>
+            <li><a href="#" id="menu-api-keys"><i class="fa-solid fa-key"></i> مفاتيح API الخاصة بك</a></li>
+            <li><a href="#" id="menu-support"><i class="fa-solid fa-headset"></i> تواصل مع الدعم</a></li>
+            <li><a href="index.html" style="margin-top: 20px; color: var(--color-primary); border: 1px solid rgba(0, 243, 255, 0.2);"><i class="fa-solid fa-arrow-right-from-bracket"></i> العودة للموقع</a></li>
+        </ul>
+
+        <div class="sidebar-bottom">
+            <div class="user-profile">
+                <div class="user-avatar" id="sidebarAvatar">م</div>
+                <div class="user-info">
+                    <h4 id="sidebarName">جاري التحميل...</h4>
+                    <p id="sidebarUsername">...</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="top-role">
+                <div class="role-badge">لوحة العميل</div>
+            </div>
+            
+            <div class="top-header-right">
+                <div class="top-icons">
+                    <div class="avatar-btn" id="topAvatar">م</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            
+            <!-- الصفحة الرئيسية (الملف الشخصي) -->
+            <div id="section-home" class="page-section active-section">
+                <div class="page-header">
+                    <h1 class="page-title">إعدادات الحساب</h1>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><span class="panel-title-icon"></span>معلوماتك الشخصية</div>
+                        <button id="saveProfileBtn" class="btn btn-save">
+                            <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                        </button>
+                    </div>
+                    
+                    <div class="profile-avatar-wrapper">
+                        <div class="avatar-preview" id="avatarPreview" title="اضغط لتغيير الصورة الشخصية">
+                            <span id="avatarLetter">م</span>
+                            <img id="avatarImage" src="" alt="صورة الملف الشخصي">
+                            <div class="avatar-overlay"><i class="fa-solid fa-camera"></i></div>
+                        </div>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        <p style="margin-top: 10px; font-size: 13px; color: var(--color-muted-foreground); font-weight: 600;">تغيير الصورة الشخصية</p>
+                    </div>
+
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <label><i class="fa-solid fa-hashtag"></i> كود العميل (تلقائي)</label>
+                            <input type="text" id="profUserCode" class="profile-input" readonly dir="ltr" style="text-align: right;">
+                        </div>
+                        
+                        <div class="profile-item">
+                            <label><i class="fa-solid fa-at"></i> اسم المستخدم (لا يمكن تغييره)</label>
+                            <input type="text" id="profUsername" class="profile-input" readonly>
+                        </div>
+
+                        <div class="profile-item">
+                            <label><i class="fa-solid fa-user"></i> الاسم بالكامل</label>
+                            <input type="text" id="profName" class="profile-input" placeholder="أدخل اسمك بالكامل">
+                        </div>
+
+                        <div class="profile-item">
+                            <label><i class="fa-solid fa-phone"></i> رقم التليفون</label>
+                            <input type="text" id="profPhone" class="profile-input" dir="ltr" style="text-align: right;" placeholder="+20 1xxxxxxxxx">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px;">
+                        <label style="color: var(--color-muted-foreground); font-size: 14px; font-weight: 700; display: block;">كلمة المرور الحالية</label>
+                        <div class="password-container">
+                            <input type="password" id="client-password" class="password-input" placeholder="••••••••">
+                            <button type="button" id="toggle-password-btn" class="toggle-pwd-btn">
+                                <i class="fa-solid fa-eye"></i> <span>إظهار</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صفحة مفاتيح API -->
+            <div id="section-api-keys" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">مفاتيح API الخاصة بك</h1>
+                </div>
+                <div class="api-layout">
+                    <div class="panel">
+                        <div class="panel-header"><div class="panel-title"><span class="panel-title-icon"></span>إنشاء مفتاح جديد</div></div>
+                        <p style="color: var(--color-muted-foreground); font-size: 14px;">قريباً سيتم تفعيل إنشاء المفاتيح تلقائياً من هذه اللوحة.</p>
+                    </div>
+                    <div class="panel">
+                        <div class="empty-state">
+                            <i class="fa-solid fa-key empty-state-icon"></i>
+                            <h3>لا توجد مفاتيح بعد</h3>
+                            <p>قم بإنشاء مفتاح API الأول لبدء استخدام الخدمات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صفحة الدعم الفني -->
+            <div id="section-support" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">تواصل مع الدعم</h1>
+                </div>
+                <div class="panel">
+                    <div class="panel-header"><div class="panel-title"><span class="panel-title-icon"></span>إرسال تذكرة دعم فني</div></div>
+                    <p style="color: var(--color-muted-foreground); font-size: 14px;">تواصل معنا مباشرة عبر الواتساب لتسريع عملية الدعم.</p>
+                    <a href="https://wa.me/+201099273142" target="_blank" class="btn btn-save" style="margin-top: 20px;">
+                        <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <script>
+        // التحقق من الدخول واستدعاء/تحديث البيانات
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUsername = localStorage.getItem('luxen_user');
+            if (!loggedInUsername) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('luxen_all_users')) || [];
+            let userIndex = users.findIndex(u => u.username === loggedInUsername);
+
+            if (userIndex === -1) {
+                alert('حدث خطأ في تحميل بيانات المستخدم!');
+                return;
+            }
+
+            let currentUser = users[userIndex];
+
+            // 1. توليد كود العميل إذا لم يكن موجوداً
+            if (!currentUser.userCode) {
+                currentUser.userCode = 'LUX-' + Math.floor(10000 + Math.random() * 90000);
+                users[userIndex] = currentUser;
+                localStorage.setItem('luxen_all_users', JSON.stringify(users));
+            }
+
+            // 2. تعبئة الحقول بالبيانات
+            document.getElementById('profUserCode').value = currentUser.userCode;
+            document.getElementById('profUsername').value = currentUser.username;
+            document.getElementById('profName').value = currentUser.name;
+            document.getElementById('profPhone').value = currentUser.phone || '';
+            document.getElementById('client-password').value = currentUser.password || ''; 
+            
+            document.getElementById('sidebarName').textContent = currentUser.name;
+            document.getElementById('sidebarUsername').textContent = currentUser.username;
+
+            // 3. معالجة وتحديث الصورة الشخصية
+            const firstLetter = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'M';
+            const sidebarAvatar = document.getElementById('sidebarAvatar');
+            const topAvatar = document.getElementById('topAvatar');
+            const avatarLetter = document.getElementById('avatarLetter');
+            const avatarImage = document.getElementById('avatarImage');
+
+            sidebarAvatar.textContent = firstLetter;
+            topAvatar.textContent = firstLetter;
+            avatarLetter.textContent = firstLetter;
+
+            if (currentUser.avatar) {
+                avatarImage.src = currentUser.avatar;
+                avatarImage.style.display = 'block';
+                avatarLetter.style.display = 'none';
+                
+                const imgHTML = `<img src="${currentUser.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
+                sidebarAvatar.innerHTML = imgHTML;
+                topAvatar.innerHTML = imgHTML;
+            }
+        });
+
+        // 4. نظام رفع وتغيير الصورة
+        const avatarPreview = document.getElementById('avatarPreview');
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarImage = document.getElementById('avatarImage');
+        const avatarLetter = document.getElementById('avatarLetter');
+
+        avatarPreview.addEventListener('click', () => avatarInput.click());
+        
+        avatarInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarImage.src = e.target.result;
+                    avatarImage.style.display = 'block';
+                    avatarLetter.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 5. حفظ التعديلات
+        document.getElementById('saveProfileBtn').addEventListener('click', () => {
+            let users = JSON.parse(localStorage.getItem('luxen_all_users')) || [];
+            const loggedInUsername = localStorage.getItem('luxen_user');
+            let userIndex = users.findIndex(u => u.username === loggedInUsername);
+            
+            if (userIndex !== -1) {
+                users[userIndex].name = document.getElementById('profName').value.trim();
+                users[userIndex].phone = document.getElementById('profPhone').value.trim();
+                users[userIndex].password = document.getElementById('client-password').value.trim();
+
+                // حفظ الصورة لو تم رفعها
+                if (avatarImage.style.display === 'block') {
+                    users[userIndex].avatar = avatarImage.src;
+                }
+
+                localStorage.setItem('luxen_all_users', JSON.stringify(users));
+                alert('تم حفظ التعديلات بنجاح! سيتم تحديث الصفحة.');
+                window.location.reload();
+            }
+        });
+
+        // إظهار/إخفاء الباسورد
+        const togglePasswordBtn = document.getElementById('toggle-password-btn');
+        const clientPasswordInput = document.getElementById('client-password');
+        if (togglePasswordBtn) {
+            togglePasswordBtn.addEventListener('click', () => {
+                const toggleIcon = togglePasswordBtn.querySelector('i');
+                const toggleText = togglePasswordBtn.querySelector('span');
+                if (clientPasswordInput.type === 'password') {
+                    clientPasswordInput.type = 'text';
+                    toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                    toggleText.textContent = 'إخفاء';
+                    togglePasswordBtn.style.color = 'var(--color-danger)'; 
+                    togglePasswordBtn.style.borderColor = 'var(--color-danger)';
+                } else {
+                    clientPasswordInput.type = 'password';
+                    toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+                    toggleText.textContent = 'إظهار';
+                    togglePasswordBtn.style.color = 'var(--color-foreground)';
+                    togglePasswordBtn.style.borderColor = 'var(--color-border)';
+                }
+            });
+        }
+
+        // التحكم في التبويبات (Tabs)
+        const menuHome = document.getElementById('menu-home');
+        const menuApiKeys = document.getElementById('menu-api-keys');
+        const menuSupport = document.getElementById('menu-support');
+        const sectionHome = document.getElementById('section-home');
+        const sectionApiKeys = document.getElementById('section-api-keys');
+        const sectionSupport = document.getElementById('section-support');
+
+        function switchTab(activeMenu, activeSection) {
+            [menuHome, menuApiKeys, menuSupport].forEach(m => m.classList.remove('active'));
+            [sectionHome, sectionApiKeys, sectionSupport].forEach(s => s.classList.remove('active-section'));
+            activeMenu.classList.add('active');
+            activeSection.classList.add('active-section');
+        }
+
+        menuHome.addEventListener('click', (e) => { e.preventDefault(); switchTab(menuHome, sectionHome); });
+        menuApiKeys.addEventListener('click', (e) => { e.preventDefault(); switchTab(menuApiKeys, sectionApiKeys); });
+        menuSupport.addEventListener('click', (e) => { e.preventDefault(); switchTab(menuSupport, sectionSupport); });
+    </script>
+</body>
+</html>
